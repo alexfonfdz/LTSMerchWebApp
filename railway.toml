@@ -1,5 +1,5 @@
 [build]
-builder = "dockefile"
+builder = "dockerfile"
 dockerfilePath = "./LTSMerchWebApp/Dockerfile"
 
 [deploy]
