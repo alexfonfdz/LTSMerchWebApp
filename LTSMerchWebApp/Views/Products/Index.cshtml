@@ -1,96 +1,106 @@
-﻿<style>
-        .product-title {
-        font-size: 1.2rem;
-        font-weight: bold;
-        text-transform: uppercase;
-        margin-top: 10px;
-    }
+﻿@model IEnumerable<LTSMerchWebApp.Models.Product>
 
-    .price {
-        font-size: 1.1rem;
-        color: #555;
-    }
-
-    .img-fluid {
-        max-width: 80%; /* Asegurarse de que las imágenes no ocupen más espacio del necesario */
-        height: auto;
-    }
-
-</style>
+<head>
+    <!-- Otros enlaces y scripts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="~/css/ProductsIndex.css"> 
+    <link rel="stylesheet" href="~/css/SidebarModalAdd.css">
+</head>
 
 <div class="container mt-5">
-    <div class="row">
-        <!-- Producto 1 -->
-        <div class="col-md-4 text-center mb-4">
-            <a href="@Url.Action("Details", "Products", new { id = 1 })">
-                <img src="~/img/camisa-delante.png" alt="Producto 1" class="img-fluid">
-            </a>
-            <h5 class="product-title mt-3">TITLE TEE</h5>
-            <p class="price">$XX.XX</p>
-        </div>
-        <!-- Producto 2 -->
-        <div class="col-md-4 text-center mb-4">
-            <a href="@Url.Action("Details", "Products", new { id = 2 })">
-                <img src="~/img/tshirt.png" alt="Producto 2" class="img-fluid">
-            </a>
-            <h5 class="product-title mt-3">TITLE TEE</h5>
-            <p class="price">$XX.XX</p>
-        </div>
-        <!-- Producto 3 -->
-        <div class="col-md-4 text-center mb-4">
-            <a href="@Url.Action("Details", "Products", new { id = 3 })">
-                <img src="~/img/hoodie.png" alt="Producto 3" class="img-fluid">
-            </a>
-            <h5 class="product-title mt-3">TITLE ZIP UP HOODIE</h5>
-            <p class="price">$XX.XX</p>
-        </div>
-        <!-- Producto 4 -->
-        <div class="col-md-4 text-center mb-4">
-            <a href="@Url.Action("Details", "Products", new { id = 4 })">
-                <img src="~/img/hoodie.png" alt="Producto 4" class="img-fluid">
-            </a>
-            <h5 class="product-title mt-3">TITLE HOODIE</h5>
-            <p class="price">$XX.XX</p>
-        </div>
-        <!-- Producto 5 -->
-        <div class="col-md-4 text-center mb-4">
-            <a href="@Url.Action("Details", "Products", new { id = 5 })">
-                <img src="~/img/hoodie.png" alt="Producto 5" class="img-fluid">
-            </a>
-            <h5 class="product-title mt-3">TITLE HOODIE</h5>
-            <p class="price">$XX.XX</p>
-        </div>
-        <!-- Producto 6 -->
-        <div class="col-md-4 text-center mb-4">
-            <a href="@Url.Action("Details", "Products", new { id = 6 })">
-                <img src="~/img/cap.png" alt="Producto 6" class="img-fluid">
-            </a>
-            <h5 class="product-title mt-3">TITLE CAP</h5>
-            <p class="price">$XX.XX</p>
-        </div>
-        <!-- Producto 7 -->
-        <div class="col-md-4 text-center mb-4">
-            <a href="@Url.Action("Details", "Products", new { id = 7 })">
-                <img src="~/img/hoodie.png" alt="Producto 7" class="img-fluid">
-            </a>
-            <h5 class="product-title mt-3">TITLE SWEATER</h5>
-            <p class="price">$XX.XX</p>
-        </div>
-        <!-- Producto 8 -->
-        <div class="col-md-4 text-center mb-4">
-            <a href="@Url.Action("Details", "Products", new { id = 8 })">
-                <img src="~/img/hoodie.png" alt="Producto 8" class="img-fluid">
-            </a>
-            <h5 class="product-title mt-3">TITLE WINTER HAT</h5>
-            <p class="price">$XX.XX</p>
-        </div>
-        <!-- Producto 9 -->
-        <div class="col-md-4 text-center mb-4">
-            <a href="@Url.Action("Details", "Products", new { id = 9 })">
-                <img src="~/img/hoodie.png" alt="Producto 9" class="img-fluid">
-            </a>
-            <h5 class="product-title mt-3">TITLE TOTE BAG</h5>
-            <p class="price">$XX.XX</p>
+    <h2 class="product-title">PRODUCTOS</h2>
+    <div class="table-wrapper">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Imagen del producto</th>
+                        <th>Nombre del producto</th>
+                        <th>Descripción del producto</th>
+                        <th>Categoría</th>
+                        <th>Color</th>
+                        <th>Talla</th>
+                        <th>Precio unitario</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model)
+                    {
+                        <tr data-product-id="@product.ProductId">
+                            <td>@product.ProductId</td>
+                            <td>
+                                <img src="~/img/@product.ImageUrl" alt="@product.Name" class="img-fluid">
+                            </td>
+                            <td>@product.Name</td>
+                            <td>@product.Description</td>
+                            <td></td>
+                            <td>
+                                <!-- Mostrar el Color -->
+                                @foreach (var option in product.ProductOptions)
+                                {
+                                    @option.Color?.ColorName <br /> <!-- Usamos "?" para evitar errores si es null -->
+                                }
+                            </td>
+                            <td>
+                                <!-- Mostrar la Talla -->
+                                @foreach (var option in product.ProductOptions)
+                                {
+                                    @option.Size?.SizeName <br /> <!-- Usamos "?" para evitar errores si es null -->
+                                }
+                            </td>
+                            <td>@product.Price.ToString("F2")</td>
+                            <td></td>
+                            <td class="action-icons">
+                                <a href="javascript:void(0);" onclick="openEditSidebar(@product.ProductId)">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="@Url.Action("Delete", "Products", new { id = product.ProductId })">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
         </div>
     </div>
+
+    <!-- Botón para abrir el sidebar -->
+    <div class="button-container">
+        <button type="button" class="add-product-btn" onclick="openSidebar()">
+            AGREGAR PRODUCTO
+        </button>
+    </div>
 </div>
+
+<!-- Incluir el sidebar de agregar producto -->
+@Html.Partial("_AddProductSidebar", new LTSMerchWebApp.Models.Product())
+@Html.Partial("_EditProductSidebar", new LTSMerchWebApp.Models.Product())
+
+
+
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function openSidebar() {
+            $('#addProductForm')[0].reset();
+            document.getElementById("file-upload-name").textContent = 'No hay archivo seleccionado';
+
+            document.getElementById("addProductSidebar").classList.add("sidebar-open");
+        }
+
+        function closeSidebar() {
+            document.getElementById("addProductSidebar").classList.remove("sidebar-open");
+        }
+
+
+
+
+    </script>
+}
