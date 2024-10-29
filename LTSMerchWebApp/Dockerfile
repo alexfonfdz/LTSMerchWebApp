@@ -1,5 +1,8 @@
 # Esta fase se usa para compilar el proyecto de servicio
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    clang zlib1g-dev
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["LTSMerchWebApp/LTSMerchWebApp.csproj", "LTSMerchWebApp/"]
@@ -16,5 +19,6 @@ RUN dotnet publish "./LTSMerchWebApp.csproj" -c $BUILD_CONFIGURATION -o /app/pub
 # Esta fase se usa en producción o cuando se ejecuta desde VS en modo normal (valor predeterminado cuando no se usa la configuración de depuración)
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS final
 WORKDIR /app
+EXPOSE 8080
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "LTSMerchWebApp.dll"]
+ENTRYPOINT ["./LTSMerchWebApp.dll"]
